@@ -6,6 +6,7 @@ public class OffsetScroller : MonoBehaviour {
     public float scrollSpeed;
     private Vector2 savedOffset;
 
+    /*
     void Start () {
         savedOffset = renderer.sharedMaterial.GetTextureOffset ("_MainTex");
     }
@@ -19,4 +20,5 @@ public class OffsetScroller : MonoBehaviour {
     void OnDisable () {
         renderer.sharedMaterial.SetTextureOffset ("_MainTex", savedOffset);
     }
+    */
 }

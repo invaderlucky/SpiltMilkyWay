@@ -10,12 +10,14 @@ public class GameManager : MonoBehaviour {
     public GameObject laserRed;
     public GameObject laserBlue;
     public GameObject laserPurple;
-
+    public GameObject enemy;
+    public Transform[] spawnPoints;
+    public bool spawnEnemies;
 
 
     // Use this for initialization
     void Start () {
-		
+        StartCoroutine(makeEnemies());
 	}
 	
 	// Update is called once per frame
@@ -98,11 +100,26 @@ public class GameManager : MonoBehaviour {
     {
         laserBlue.SetActive(true);
         //turn on sprite and hitbox
+
     }
 
     void FirePurpleLaser()
     {
         laserPurple.SetActive(true);
         //turn on sprite and hitbox
+
+    }
+
+    IEnumerator makeEnemies()
+    {
+        while (spawnEnemies)
+        {
+            for (int i = 0; i < 1; i++)
+            {
+                int r = Random.Range(0, spawnPoints.Length);
+                Instantiate(enemy, spawnPoints[r].position, Quaternion.identity);
+            }
+            yield return new WaitForSeconds(3.0f);
+        }
     }
 }
