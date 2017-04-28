@@ -56,8 +56,10 @@ public class Enemy : MonoBehaviour {
             pos = redShip.transform.position;
         }
         Vector2 current = (pos - new Vector2(transform.position.x, transform.position.y)).normalized * speed * Time.deltaTime;
-        //transform.position = new Vector2(transform.position.x + current.x, transform.position.y + current.y);
-        transform.position = new Vector2(transform.position.x, transform.position.y + current.y);
+        transform.position = new Vector2(transform.position.x + current.x, transform.position.y + current.y);
+        float angle = Mathf.Atan2(transform.position.y, transform.position.x);
+        transform.rotation = Quaternion.AngleAxis(angle, Vector2.up);
+        //transform.position = new Vector2(transform.position.x, transform.position.y + current.y);
 
         if (beingDamaged)
         {
@@ -74,9 +76,8 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider col)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        print("Colliding");
         /* //Turn beingDamaged to true
         if (col.gameObject.tag.Equals("PurpleLaser"))
         {
@@ -96,7 +97,8 @@ public class Enemy : MonoBehaviour {
         // Only damage if right laser color
         if (col.gameObject.tag == "PurpleLaser" || (col.gameObject.tag == "RedLaser" && !color) 
             || (col.gameObject.tag == "BlueLaser" && color)) {
-                health -= 10f * Time.deltaTime;
+                health -= 50f * Time.deltaTime;
+                print(health);
         }
 
         // DEATH

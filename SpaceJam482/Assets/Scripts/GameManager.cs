@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public Transform[] spawnPoints;
     public bool spawnEnemies;
     public Boundary boundary;
+    public AudioSource laserSound;
 
     [System.Serializable]
     public class Boundary
