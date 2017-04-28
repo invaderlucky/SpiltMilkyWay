@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour {
 
         if (beingDamaged)
         {
-            health -= 50f * Time.deltaTime;
+            health -= PlayerController.laserDamage * Time.deltaTime;
             if (health <= 0)
             {
                 Destroy(this.gameObject);

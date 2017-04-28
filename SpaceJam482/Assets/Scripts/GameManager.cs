@@ -34,8 +34,8 @@ public class GameManager : MonoBehaviour {
         float verticalLeft = Input.GetAxis("VerticalLeft");
         float verticalRight = Input.GetAxis("VerticalRight");
 
-        bool fireLeft = Input.GetButton("Fire1");
-        bool fireRight = Input.GetButton("Fire2");
+        bool fireLeft = Input.GetButton("Fire1"); //e
+        bool fireRight = Input.GetButton("Fire2"); //u
 
         if (Input.GetKeyDown("joystick button 0")) {
             laserSound.Play();

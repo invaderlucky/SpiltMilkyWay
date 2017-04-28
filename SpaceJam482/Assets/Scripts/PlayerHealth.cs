@@ -13,6 +13,11 @@ public class PlayerHealth : MonoBehaviour {
     public float flashSpeed = 5f;                               // The speed the damageImage will fade at.
     public Color flashColour = new Color(1f, 0f, 0f, 0.1f);     // The colour the damageImage is set to, to flash.
 
+    public static float laserDamage = 50f;
+    public int missileCount = 0;
+    public float energy = 100;
+    public float energyRegen = 2;
+
     public GameObject HealthBar;
 
 
@@ -54,6 +59,8 @@ public class PlayerHealth : MonoBehaviour {
 
         // Reset the damaged flag.
         damaged = false;
+        energy += energyRegen * Time.deltaTime;
+        if (energy >= 100f) energy = 100f;
     }
 
 
@@ -61,7 +68,8 @@ public class PlayerHealth : MonoBehaviour {
     {
         // Set the damaged flag so the screen will flash.
         damaged = true;
-
+        //check energy/shield, subtract if possible
+        if()
         // Reduce the current health by the damage amount.
         currentHealth -= amount;
 

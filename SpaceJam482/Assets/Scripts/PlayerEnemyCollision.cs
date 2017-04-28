@@ -7,7 +7,7 @@ public class PlayerEnemyCollision : MonoBehaviour {
 	public GameObject player;
 	
 	void OnTriggerStay2D(Collider2D other) {
-		player.SendMessage("TakeDamage", 1.0f);
+		player.SendMessage("TakeDamage", 10.0f);
 	}
 	
 }
