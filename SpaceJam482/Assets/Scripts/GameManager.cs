@@ -13,7 +13,13 @@ public class GameManager : MonoBehaviour {
     public GameObject enemy;
     public Transform[] spawnPoints;
     public bool spawnEnemies;
+    public Boundary boundary;
 
+    [System.Serializable]
+    public class Boundary
+    {
+        public float xMin, xMax, yMin, yMax;
+    }
 
     // Use this for initialization
     void Start () {
@@ -46,6 +52,19 @@ public class GameManager : MonoBehaviour {
         {
             playerRight.transform.position = new Vector2(playerRight.transform.position.x, speed * verticalRight * Time.deltaTime + playerRight.transform.position.y);
         }
+
+        // Set restriction for movement off screen
+        playerLeft.transform.position = new Vector2 
+        (
+            Mathf.Clamp (playerLeft.transform.position.x, boundary.xMin, boundary.xMax),
+            Mathf.Clamp (playerLeft.transform.position.y, boundary.yMin, boundary.yMax)
+        );
+
+        playerRight.transform.position = new Vector2 
+        (
+            Mathf.Clamp (playerRight.transform.position.x, boundary.xMin, boundary.xMax),
+            Mathf.Clamp (playerRight.transform.position.y, boundary.yMin, boundary.yMax)
+        );
 
         float AngleRad = Mathf.Atan2(playerLeft.transform.position.y - playerRight.transform.position.y, playerLeft.transform.position.x - playerRight.transform.position.x);
         float AngleDeg = (180 / Mathf.PI) * AngleRad;
@@ -86,7 +105,8 @@ public class GameManager : MonoBehaviour {
         laserPurple.transform.position = p;
         laserPurple.transform.localScale = s;
 
-
+        // Game over if both player ships ded
+        
 
     }
 

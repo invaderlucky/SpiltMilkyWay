@@ -56,7 +56,8 @@ public class Enemy : MonoBehaviour {
             pos = redShip.transform.position;
         }
         Vector2 current = (pos - new Vector2(transform.position.x, transform.position.y)).normalized * speed * Time.deltaTime;
-        transform.position = new Vector2(transform.position.x + current.x, transform.position.y + current.y);
+        //transform.position = new Vector2(transform.position.x + current.x, transform.position.y + current.y);
+        transform.position = new Vector2(transform.position.x, transform.position.y + current.y);
 
         if (beingDamaged)
         {
@@ -66,11 +67,17 @@ public class Enemy : MonoBehaviour {
                 Destroy(this.gameObject);
             }
         }
+
+        // Destroy after hitting the boundary
+        if (this.transform.position.y <= -20) {
+            Destroy(this.gameObject);
+        }
     }
 
-    void OnCollisionEnter(Collision col)
+    void OnTriggerEnter(Collider col)
     {
-        //Turn beingDamaged to true
+        print("Colliding");
+        /* //Turn beingDamaged to true
         if (col.gameObject.tag.Equals("PurpleLaser"))
         {
             beingDamaged = true;
@@ -84,10 +91,21 @@ public class Enemy : MonoBehaviour {
         if (col.gameObject.tag.Equals("BlueLaser") && color)
         {
             beingDamaged = true;
+        } */
+
+        // Only damage if right laser color
+        if (col.gameObject.tag == "PurpleLaser" || (col.gameObject.tag == "RedLaser" && !color) 
+            || (col.gameObject.tag == "BlueLaser" && color)) {
+                health -= 10f * Time.deltaTime;
+        }
+
+        // DEATH
+        if (health <= 0) {
+            Destroy(this.gameObject);
         }
     }
 
-    void OnCollisionExit(Collision col)
+    /* void OnTriggerExit(Collider col)
     {
         //Turn beingDamaged to false
         if (col.gameObject.tag.Equals("PurpleLaser"))
@@ -104,5 +122,5 @@ public class Enemy : MonoBehaviour {
         {
             beingDamaged = false;
         }
-    }
+    } */
 }
