@@ -37,6 +37,10 @@ public class GameManager : MonoBehaviour {
         bool fireLeft = Input.GetButton("Fire1");
         bool fireRight = Input.GetButton("Fire2");
 
+        if (Input.GetKeyDown("joystick button 0")) {
+            laserSound.Play();
+        }
+
         if (horizontalLeft != 0.0f)
         {
             playerLeft.transform.position = new Vector2(speed * horizontalLeft * Time.deltaTime + playerLeft.transform.position.x, playerLeft.transform.position.y);
