@@ -6,15 +6,17 @@ public class Enemy : MonoBehaviour {
 
     public GameObject blueShip;
     public GameObject redShip;
+    public GameObject gameManager;
     public bool color;
     public bool target;
     public float speed = 4f;
-    public float health = 100f;
+    public float health = 45f;
 
     private bool beingDamaged = false;
 
     // Use this for initialization
     void Start () {
+        gameManager = GameObject.Find("GameManager");
         blueShip = GameObject.Find("PlayerBlue");
         redShip = GameObject.Find("PlayerRed");
         int r = Random.Range(0, 2);
@@ -63,7 +65,7 @@ public class Enemy : MonoBehaviour {
 
         if (beingDamaged)
         {
-            health -= PlayerController.laserDamage * Time.deltaTime;
+            health -= PlayerHealth.laserDamage * Time.deltaTime;
             if (health <= 0)
             {
                 Destroy(this.gameObject);
@@ -103,7 +105,9 @@ public class Enemy : MonoBehaviour {
 
         // DEATH
         if (health <= 0) {
+            GameObject.Find("GameManager").GetComponent<GameManager>().PLAYEXPLOSION();
             Destroy(this.gameObject);
+            gameManager.GetComponent<GameManager>().score++;
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -15,6 +16,12 @@ public class GameManager : MonoBehaviour {
     public bool spawnEnemies;
     public Boundary boundary;
     public AudioSource laserSound;
+    public int score;
+
+    private PlayerHealth pLeft;
+    private PlayerHealth pRight;
+
+    public GameObject spiltText;
 
     [System.Serializable]
     public class Boundary
@@ -24,18 +31,21 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        pLeft = playerLeft.GetComponent<PlayerHealth>();
+        pRight = playerRight.GetComponent<PlayerHealth>();
         StartCoroutine(makeEnemies());
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        spiltText.GetComponent<Text>().text = "ENEMIES SPILT: " + score;
         float horizontalLeft = Input.GetAxis("HorizontalLeft");
         float horizontalRight = Input.GetAxis("HorizontalRight");
         float verticalLeft = Input.GetAxis("VerticalLeft");
         float verticalRight = Input.GetAxis("VerticalRight");
 
-        bool fireLeft = Input.GetButton("Fire1"); //e
-        bool fireRight = Input.GetButton("Fire2"); //u
+        float fireLeft = Input.GetAxis("Fire1"); //e
+        float fireRight = Input.GetAxis("Fire2"); //u
 
         if (Input.GetKeyDown("joystick button 0")) {
             laserSound.Play();
@@ -51,11 +61,11 @@ public class GameManager : MonoBehaviour {
         }
         if (verticalLeft != 0.0f)
         {
-            playerLeft.transform.position = new Vector2(playerLeft.transform.position.x, speed * verticalLeft * Time.deltaTime + playerLeft.transform.position.y);
+            playerLeft.transform.position = new Vector2(playerLeft.transform.position.x, speed * -verticalLeft * Time.deltaTime + playerLeft.transform.position.y);
         }
         if (verticalRight != 0.0f)
         {
-            playerRight.transform.position = new Vector2(playerRight.transform.position.x, speed * verticalRight * Time.deltaTime + playerRight.transform.position.y);
+            playerRight.transform.position = new Vector2(playerRight.transform.position.x, speed * -verticalRight * Time.deltaTime + playerRight.transform.position.y);
         }
 
         // Set restriction for movement off screen
@@ -80,16 +90,23 @@ public class GameManager : MonoBehaviour {
         laserBlue.SetActive(false);
         laserPurple.SetActive(false);
 
-        if (fireRight && !fireLeft)
+        pLeft.isShooting = false;
+        pRight.isShooting = false;
+
+        if (fireRight == 1 && fireLeft == 0 && pRight.energy > 2)
         {
             FireRedLaser();
+            pRight.isShooting = true;
         }
-        if (fireLeft && !fireRight)
+        if (fireLeft == 1 && fireRight == 0 && pLeft.energy > 2)
         {
+            pLeft.isShooting = true;
             FireBlueLaser();
         }
-        if (fireLeft && fireRight)
+        if (fireLeft == 1 && fireRight == 1 && pRight.energy > 2 && pLeft.energy > 2)
         {
+            pLeft.isShooting = true;
+            pRight.isShooting = true;
             FirePurpleLaser();
         }
 
@@ -119,12 +136,14 @@ public class GameManager : MonoBehaviour {
     {
         laserRed.SetActive(true);
         //turn on sprite and hitbox
+        GetComponent<AudioSource>().Play();
     }
 
     void FireBlueLaser()
     {
         laserBlue.SetActive(true);
         //turn on sprite and hitbox
+        GetComponent<AudioSource>().Play();
 
     }
 
@@ -132,7 +151,7 @@ public class GameManager : MonoBehaviour {
     {
         laserPurple.SetActive(true);
         //turn on sprite and hitbox
-
+        GetComponent<AudioSource>().Play();
     }
 
     IEnumerator makeEnemies()
@@ -144,7 +163,12 @@ public class GameManager : MonoBehaviour {
                 int r = Random.Range(0, spawnPoints.Length);
                 Instantiate(enemy, spawnPoints[r].position, Quaternion.identity);
             }
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(1.0f);
         }
+    }
+
+    public void PLAYEXPLOSION()
+    {
+        GetComponents<AudioSource>()[1].Play();
     }
 }
